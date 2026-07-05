@@ -1,48 +1,175 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Bazinga Funds</title>
-    <style>
-        body{
-            background:#0f172a;
-            color:white;
-            font-family:Arial,sans-serif;
-            text-align:center;
-            padding-top:80px;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        .card{
-            background:#1e293b;
-            width:420px;
-            margin:auto;
-            padding:30px;
-            border-radius:20px;
-            box-shadow:0 10px 30px rgba(0,0,0,.4);
-        }
+<title>Bazinga Funds</title>
 
-        h1{
-            color:#FFD700;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-        .balance{
-            font-size:50px;
-            margin:20px;
-        }
+<style>
 
-        button{
-            padding:15px 30px;
-            font-size:18px;
-            border:none;
-            border-radius:12px;
-            cursor:pointer;
-            background:#22c55e;
-            color:white;
-        }
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
 
-        button:hover{
-            background:#16a34a;
-        }
-    </style>
+body{
+
+background:linear-gradient(135deg,#0f172a,#111827,#1e293b);
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+color:white;
+
+}
+
+.card{
+
+width:430px;
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(20px);
+border-radius:25px;
+padding:35px;
+box-shadow:0 20px 50px rgba(0,0,0,.35);
+
+}
+
+h1{
+
+text-align:center;
+color:#FFD700;
+margin-bottom:5px;
+
+}
+
+.subtitle{
+
+text-align:center;
+opacity:.7;
+margin-bottom:25px;
+
+}
+
+.balance{
+
+font-size:55px;
+font-weight:bold;
+text-align:center;
+margin-bottom:25px;
+
+}
+
+.bankcard{
+
+height:210px;
+border-radius:22px;
+background:linear-gradient(135deg,#1d4ed8,#2563eb,#38bdf8);
+padding:25px;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+box-shadow:0 10px 30px rgba(0,0,0,.4);
+margin-bottom:25px;
+
+}
+
+.chip{
+
+width:55px;
+height:42px;
+background:gold;
+border-radius:8px;
+
+}
+
+.number{
+
+font-size:23px;
+letter-spacing:3px;
+
+}
+
+.bottom{
+
+display:flex;
+justify-content:space-between;
+font-size:14px;
+
+}
+
+.buttons{
+
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+margin-bottom:25px;
+
+}
+
+button{
+
+border:none;
+padding:15px;
+border-radius:15px;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+transition:.25s;
+
+}
+
+.add{
+
+background:#22c55e;
+color:white;
+
+}
+
+.remove{
+
+background:#ef4444;
+color:white;
+
+}
+
+button:hover{
+
+transform:translateY(-3px);
+
+}
+
+.history{
+
+background:rgba(255,255,255,.05);
+padding:15px;
+border-radius:15px;
+max-height:180px;
+overflow:auto;
+
+}
+
+.history h3{
+
+margin-bottom:10px;
+
+}
+
+.item{
+
+display:flex;
+justify-content:space-between;
+padding:8px 0;
+border-bottom:1px solid rgba(255,255,255,.08);
+
+}
+
+</style>
+
 </head>
 
 <body>
@@ -51,15 +178,144 @@
 
 <h1>🏦 Bazinga Funds</h1>
 
-<p>Current Balance</p>
+<p class="subtitle">
+The Future of Fake Banking
+</p>
 
-<div class="balance">₱3,000</div>
+<div class="balance" id="balance">
+₱3,000
+</div>
 
-<button onclick="alert('Money Added! 💸')">
-Add Money
+<div class="bankcard">
+
+<div class="chip"></div>
+
+<div class="number">
+4921 •••• •••• 8275
+</div>
+
+<div class="bottom">
+
+<div>
+
+CARD HOLDER<br>
+KOLA-KOOLER
+
+</div>
+
+<div>
+
+EXPIRES<br>
+12/31
+
+</div>
+
+</div>
+
+</div>
+
+<div class="buttons">
+
+<button class="add" onclick="deposit()">
+➕ Deposit
+</button>
+
+<button class="remove" onclick="withdraw()">
+➖ Withdraw
 </button>
 
 </div>
 
+<div class="history">
+
+<h3>Recent Transactions</h3>
+
+<div id="transactions"></div>
+
+</div>
+
+</div>
+
+<script>
+
+let balance=3000;
+
+const history=[];
+
+function update(){
+
+document.getElementById("balance").innerHTML=
+"₱"+balance.toLocaleString();
+
+const area=document.getElementById("transactions");
+
+area.innerHTML="";
+
+history.slice().reverse().forEach(item=>{
+
+area.innerHTML+=`
+<div class="item">
+<span>${item.type}</span>
+<span>${item.amount}</span>
+</div>
+`;
+
+});
+
+}
+
+function deposit(){
+
+let amount=parseFloat(prompt("Deposit Amount"));
+
+if(isNaN(amount)||amount<=0)return;
+
+balance+=amount;
+
+history.push({
+
+type:"💰 Deposit",
+
+amount:"+₱"+amount.toLocaleString()
+
+});
+
+update();
+
+}
+
+function withdraw(){
+
+let amount=parseFloat(prompt("Withdraw Amount"));
+
+if(isNaN(amount)||amount<=0)return;
+
+if(amount>balance){
+
+alert("Insufficient Funds!");
+
+return;
+
+}
+
+balance-=amount;
+
+history.push({
+
+type:"💸 Withdrawal",
+
+amount:"-₱"+amount.toLocaleString()
+
+});
+
+update();
+
+}
+
+update();
+
+</script>
+
 </body>
+
 </html>
